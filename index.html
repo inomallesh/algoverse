@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoVerse — Interactive Algorithm Learning Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header / Navbar -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon">⚡</div>
+        <div class="brand-text">
+          <h1>AlgoVerse</h1>
+          <span class="tagline">Interactive Algorithm Learning Lab</span>
+        </div>
+      </div>
+
+      <!-- Category Navigation Tabs -->
+      <nav class="category-nav" id="categoryNav">
+        <button class="nav-tab active" data-category="sorting">
+          <span class="icon">📊</span> Sorting
+        </button>
+        <button class="nav-tab" data-category="searching">
+          <span class="icon">🔍</span> Searching
+        </button>
+        <button class="nav-tab" data-category="datastructures">
+          <span class="icon">🧱</span> Data Structures
+        </button>
+        <button class="nav-tab" data-category="treesgraphs">
+          <span class="icon">🌲</span> Trees & Graphs
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button id="soundToggleBtn" class="btn-icon" title="Toggle audio sound effects">
+          <span id="soundIcon">🔊</span>
+        </button>
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle theme">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Navbar: Algorithm Selector & Controls -->
+    <section class="toolbar">
+      <div class="algo-selection">
+        <label for="algoSelect">Algorithm:</label>
+        <select id="algoSelect" class="custom-select"></select>
+      </div>
+
+      <!-- Dynamic Data Inputs depending on category -->
+      <div class="data-controls" id="dataControls">
+        <!-- Injected via JavaScript based on category -->
+      </div>
+    </section>
+
+    <!-- Main Workspace: Visualizer + Explanation & Code -->
+    <main class="main-content">
+      <!-- Left / Top: Interactive Visualization Stage -->
+      <div class="visualizer-container">
+        <div class="stage-header">
+          <div class="stage-info">
+            <h2 id="currentAlgoTitle">Bubble Sort</h2>
+            <span id="stepCounterBadge" class="badge">Step 0 / 0</span>
+          </div>
+          <div class="legend" id="stageLegend">
+            <!-- Dynamic color legend items -->
+          </div>
+        </div>
+
+        <!-- The Canvas / DOM Stage where elements are animated -->
+        <div class="stage" id="stage">
+          <!-- Dynamic rendering area -->
+        </div>
+
+        <!-- Step Explanation Banner -->
+        <div class="step-explanation-card">
+          <div class="step-icon">💡</div>
+          <div class="step-text-wrap">
+            <span class="step-label">Current Action:</span>
+            <p id="stepExplanation">Select an algorithm and press Play or drag the slider to begin visualization.</p>
+          </div>
+        </div>
+
+        <!-- Interactive Animated Moving Timeline Slider & Controls -->
+        <div class="playback-panel">
+          <div class="slider-row">
+            <span class="slider-label">Timeline Slider:</span>
+            <div class="slider-wrapper">
+              <input type="range" id="timelineSlider" min="0" max="100" value="0" step="1">
+              <div class="slider-progress-fill" id="sliderProgressFill"></div>
+            </div>
+            <span id="sliderStepLabel" class="slider-step-indicator">0 / 0</span>
+          </div>
+
+          <div class="controls-row">
+            <div class="playback-buttons">
+              <button id="btnReset" class="btn btn-secondary" title="Reset to start">
+                ⏮ Reset
+              </button>
+              <button id="btnPrev" class="btn btn-secondary" title="Previous step">
+                ◀ Prev
+              </button>
+              <button id="btnPlayPause" class="btn btn-primary" title="Play / Pause animation">
+                <span id="playIcon">▶</span> <span id="playText">Play</span>
+              </button>
+              <button id="btnNext" class="btn btn-secondary" title="Next step">
+                Next ▶
+              </button>
+            </div>
+
+            <div class="speed-control">
+              <label for="speedSlider">Speed:</label>
+              <input type="range" id="speedSlider" min="1" max="10" value="5">
+              <span id="speedValue">1x</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Code Walkthrough & Complexity Guide -->
+      <aside class="sidebar">
+        <!-- Complexity Cards -->
+        <div class="card complexity-card">
+          <div class="card-header">
+            <h3>Complexity Analysis</h3>
+          </div>
+          <div class="complexity-grid">
+            <div class="complexity-item">
+              <span class="label">Best Case</span>
+              <span class="value" id="compBest">O(n)</span>
+            </div>
+            <div class="complexity-item">
+              <span class="label">Average Case</span>
+              <span class="value" id="compAvg">O(n²)</span>
+            </div>
+            <div class="complexity-item">
+              <span class="label">Worst Case</span>
+              <span class="value" id="compWorst">O(n²)</span>
+            </div>
+            <div class="complexity-item">
+              <span class="label">Space Complexity</span>
+              <span class="value" id="compSpace">O(1)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synchronized Code Snippet -->
+        <div class="card code-card">
+          <div class="card-header code-header">
+            <h3>Code Walkthrough</h3>
+            <div class="lang-tabs" id="langTabs">
+              <button class="lang-btn active" data-lang="java">Java</button>
+              <button class="lang-btn" data-lang="python">Python</button>
+              <button class="lang-btn" data-lang="cpp">C++</button>
+              <button class="lang-btn" data-lang="javascript">JS</button>
+            </div>
+          </div>
+          <div class="code-container">
+            <pre><code id="codeDisplay"></code></pre>
+          </div>
+        </div>
+
+        <!-- Description / Theory Card -->
+        <div class="card theory-card">
+          <div class="card-header">
+            <h3>How It Works</h3>
+          </div>
+          <div class="card-body">
+            <p id="algoDescription">Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>AlgoVerse — Empowering students to master Data Structures & Algorithms visually.</p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/codeData.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/algorithms.js"></script>
+  <script src="js/visualizer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
